@@ -9,20 +9,21 @@ export class ProductService {
   async create(data: CreateProductDto) {
     const productExists = await this.prisma.product.findFirst({
       where: {
-        id: data.id,
+        name: data.name,
+        price: data.price,
+        size: data.size,
+        color: data.color,
+        img: data.img,
       },
     });
 
-    console.log('productExists', productExists);
-    if (!productExists) {
+    if (productExists) {
       throw new Error('Product already exists');
     }
 
-    const book = await this.prisma.product.create({
-      data,
-    });
+    const productRegistration = await this.prisma.product.create({ data });
 
-    return book;
+    return productRegistration;
   }
 
   async searchProducts(queryParams: any) {
@@ -32,8 +33,8 @@ export class ProductService {
       where: {
         name: { contains: name, mode: 'insensitive' },
         price: { equals: price },
-        size: { equals: size },
-        color: { equals: color },
+        size: { equals: size, mode: 'insensitive' },
+        color: { equals: color, mode: 'insensitive' },
       },
     });
   }

@@ -1,7 +1,8 @@
 export class CreateProductDto {
-  id: number;
+  id: string;
   name: string;
   price: number;
   size: string;
+  img: string;
   color: string;
 }
